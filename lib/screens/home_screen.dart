@@ -1,0 +1,473 @@
+import 'package:flutter/material.dart';
+import 'play_menu_screen.dart';
+import 'Profile_screen.dart';
+import 'VIP_screen.dart';
+import 'Rewards_screens.dart';
+import 'Settings_screens.dart';
+import 'cosmetics_screen.dart';
+import 'shop_screen.dart';
+import 'friends_screen.dart';
+import 'chat_screen.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int selectedIndex = 0;
+
+  final List<Widget> _pages = const [
+    HomeTab(),
+    RewardsScreen(),
+    VipScreen(),
+    ProfileScreen(),
+    SettingsScreen(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[selectedIndex],
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          color: Color(0xFF0C7D68),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 8,
+              offset: Offset(0, -2),
+            ),
+          ],
+        ),
+        child: NavigationBar(
+          selectedIndex: selectedIndex,
+          backgroundColor: const Color(0xFF0C7D68),
+          indicatorColor: Colors.white24,
+          labelTextStyle: WidgetStateProperty.all(
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+          ),
+          onDestinationSelected: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.home, color: Colors.white),
+              label: 'Home',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.card_giftcard, color: Colors.white),
+              label: 'Rewards',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.workspace_premium, color: Colors.white),
+              label: 'VIP',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.person, color: Colors.white),
+              label: 'Profile',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.settings, color: Colors.white),
+              label: 'Settings',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HomeTab extends StatelessWidget {
+  const HomeTab({super.key});
+
+  Widget buildMainCard({
+    required BuildContext context,
+    required String title,
+    required IconData icon,
+    required List<Color> colors,
+    required VoidCallback onTap,
+    String? badge,
+  }) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 130,
+          margin: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+              colors: colors,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10,
+                offset: Offset(0, 4),
+              ),
+            ],
+            border: Border.all(color: Colors.white.withOpacity(0.3)),
+          ),
+          child: Stack(
+            children: [
+              if (badge != null)
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.orangeAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      badge,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(icon, size: 44, color: Colors.white),
+                    const SizedBox(height: 10),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildPromoBanner({
+    required String title,
+    required String subtitle,
+    required List<Color> colors,
+    required IconData icon,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(colors: colors),
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 3)),
+        ],
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 24,
+            backgroundColor: Colors.white.withOpacity(0.2),
+            child: Icon(icon, color: Colors.white, size: 26),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: const TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF12B886), Color(0xFF0E8F74), Color(0xFF0A6A5D)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 52,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withOpacity(0.14),
+                      border: Border.all(color: Colors.white24),
+                    ),
+                    child: const Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Yello Ludo',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        Text(
+                          'Play with friends and grow your profile',
+                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.shade700,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.monetization_on,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                        SizedBox(width: 6),
+                        Text(
+                          '25.0K',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Center(
+                child: Text(
+                  'LUDO',
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
+                    letterSpacing: 2,
+                    shadows: [Shadow(color: Colors.black38, blurRadius: 8)],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  buildMainCard(
+                    context: context,
+                    title: 'Play',
+                    icon: Icons.casino,
+                    colors: const [Color(0xFFFFD54F), Color(0xFFFFA000)],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const PlayMenuScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  buildMainCard(
+                    context: context,
+                    title: 'Team',
+                    icon: Icons.groups,
+                    colors: const [Color(0xFF64B5F6), Color(0xFF1E88E5)],
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Team feature coming next'),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  buildMainCard(
+                    context: context,
+                    title: 'Tournament',
+                    icon: Icons.emoji_events,
+                    colors: const [Color(0xFFFFB74D), Color(0xFFF57C00)],
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Tournament feature coming next'),
+                        ),
+                      );
+                    },
+                  ),
+                  buildMainCard(
+                    context: context,
+                    title: 'VIP Room',
+                    icon: Icons.workspace_premium,
+                    colors: const [Color(0xFFF06292), Color(0xFFD81B60)],
+                    badge: 'HOT',
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('VIP room feature coming next'),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              const Text(
+                'Events & Rewards',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              buildPromoBanner(
+                title: 'Super Value Vaults',
+                subtitle: 'Limited-time reward bundles and coins',
+                colors: const [Color(0xFF26C6DA), Color(0xFF00838F)],
+                icon: Icons.savings,
+              ),
+              buildPromoBanner(
+                title: 'Free Rewards',
+                subtitle: 'Collect your daily bonus and surprise gifts',
+                colors: const [Color(0xFF66BB6A), Color(0xFF2E7D32)],
+                icon: Icons.card_giftcard,
+              ),
+              buildPromoBanner(
+                title: 'Gold Chest',
+                subtitle: 'Open chests and unlock more cosmetics',
+                colors: const [Color(0xFFFFCA28), Color(0xFFFF8F00)],
+                icon: Icons.inventory_2,
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  buildMainCard(
+                    context: context,
+                    title: 'Cosmetics',
+                    icon: Icons.palette,
+                    colors: const [Color(0xFFBA68C8), Color(0xFF8E24AA)],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const CosmeticsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  buildMainCard(
+                    context: context,
+                    title: 'Shop',
+                    icon: Icons.store,
+                    colors: const [Color(0xFF4DD0E1), Color(0xFF00838F)],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const ShopScreen()),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  buildMainCard(
+                    context: context,
+                    title: 'Friends',
+                    icon: Icons.people,
+                    colors: const [Color(0xFF81C784), Color(0xFF2E7D32)],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const FriendsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  buildMainCard(
+                    context: context,
+                    title: 'Chat',
+                    icon: Icons.chat,
+                    colors: const [Color(0xFFFF8A65), Color(0xFFD84315)],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              const ChatScreen(friendName: 'Support'),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

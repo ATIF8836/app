@@ -1,0 +1,19 @@
+import 'package:socket_io_client/socket_io_client.dart' as io;
+
+class SocketService {
+  late io.Socket socket;
+
+  void connect() {
+    // This connects your Flutter app to your Node.js backend
+    socket = io.io('http://127.0.0.1:3000', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+    });
+    
+    socket.connect();
+    
+    socket.onConnect((_) {
+      print('Flutter: Connected to server!');
+    });
+  }
+}
