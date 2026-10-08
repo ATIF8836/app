@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'play_menu_screen.dart';
-import 'Profile_screen.dart';
-import 'VIP_screen.dart';
-import 'Rewards_screens.dart';
-import 'Settings_screens.dart';
+import 'profile_screen.dart';
+import 'vip_screen.dart';
+import 'rewards_screen.dart';
+import 'settings_screen.dart';
 import 'cosmetics_screen.dart';
 import 'shop_screen.dart';
 import 'friends_screen.dart';

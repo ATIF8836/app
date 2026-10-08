@@ -170,6 +170,44 @@ io.on('connection', (socket) => {
     console.log('game_started emitted successfully:', roomId);
   });
 
+  socket.on('send_room_chat', (data) => {
+    const roomCode = data?.roomCode?.trim()?.toUpperCase();
+    const message = data?.message?.trim();
+
+    if (!roomCode || !message) return;
+
+    const room = rooms[roomCode];
+    if (!room) return;
+
+    const isInRoom = room.players.some((player) => player.id === socket.id);
+    if (!isInRoom) return;
+
+    io.in(roomCode).emit('room_chat_message', {
+      roomCode,
+      message,
+      senderId: socket.id,
+    });
+  });
+
+  socket.on('voice_uid', (data) => {
+    const agoraUid = data?.agoraUid;
+
+    if (!agoraUid) return;
+
+    for (const roomCode in rooms) {
+      const room = rooms[roomCode];
+      const isInRoom = room.players.some((player) => player.id === socket.id);
+
+      if (isInRoom) {
+        io.in(roomCode).emit('voice_uid_update', {
+          socketId: socket.id,
+          agoraUid,
+        });
+        break;
+      }
+    }
+  });
+
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id);
 
@@ -203,7 +241,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
