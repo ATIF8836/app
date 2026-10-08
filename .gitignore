@@ -55,3 +55,5 @@ node_modules/
 build/
 .dart_tool/
 .DS_Store
+
+flutter-sdk/
